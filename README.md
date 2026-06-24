@@ -1,1 +1,8 @@
-GEETbot (working name) is an in-progress rover designed by students interning with the California NASA Space Grant during summer 2026. The goal of GEETbot is to contribute to the Artemis mission and establish a permanent human presence on the Moon. The GEETbot would terraform lunar dust (regolith) on the surface with its drum drill, and store the collected material in an on-site storage area, allowing for transportation.
+## about.
+GEETbot (working name) is an in-progress rover designed by students interning with the California NASA Space Grant during summer 2026. The goal of GEETbot is to contribute to the Artemis mission and establish a permanent human presence on the Moon. The GEETbot would terraform the lunar dust (regolith) on the surface using its drum drill and store the collected material in an on-site storage area for instant transport. GEETbot is a regolith excavator and In-Situ Resource Utilization (ISRU).
+
+## team/contributors.
+Aberham is the Co-...
+Alex is the Co-...
+Isaac is the Hardware Lead...
+Mily Patton is the Engineering Design Lead behind GEETbot. She worked on the 3D design and 
