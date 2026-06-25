@@ -1,0 +1,88 @@
+#include <Servo.h>
+
+Servo servo1;
+Servo servo2;
+
+// Track current positions globally
+int centerPos = 90;
+
+int input;
+
+void setup() {
+
+  Serial.begin(9600);
+  delay(1000);
+  
+  servo1.attach(9);
+  servo2.attach(10);
+
+  Serial.print("Enter servo degrees: ");
+  input = Serial.parseInt();
+
+  // Initialize servos to center
+  servo1.write(centerPos);
+  servo2.write(centerPos);
+  //servo2.write(currentPos2);
+  
+  // Print user guide in the Serial Monitor
+  //printStatusHeader();
+}
+
+void loop() {
+
+  // Stop while there is no data.
+  while(Serial.available() == 0) {} // Pauses the entire code until the buffer has any data.
+
+  input = Serial.parseInt();
+  Serial.read(); // To clear the invisible \n in the buffer.
+
+  // Stores input to both of the servos
+  servo1.write(input);
+  servo2.write(input);
+
+  Serial.println(input);
+  Serial.print("Enter degrees: ");
+
+
+  // Check if data is waiting in the buffer
+  /*
+  if (Serial.available() > 0) {
+    
+    // Read numbers from the buffer
+    
+    int input2 = Serial.parseInt();
+    
+    // Look for the newline character indicating you pressed 'Enter'
+    
+    if (Serial.read() == '\n' || Serial.available() >= 0) {
+      
+      // Validation: Check if the entries are valid angles
+      if (input1 >= 0 && input1 <= 180 && input2 >= 0 && input2 <= 180) {
+        currentPos1 = input1;
+        currentPos2 = input2;
+        
+        servo1.write(currentPos1);
+        servo2.write(currentPos2);
+        
+        // Print the updated positions
+        Serial.print("SUCCESS -> Servo 1: ");
+        Serial.print(currentPos1);
+        Serial.print("° | Servo 2: ");
+        Serial.print(currentPos2);
+        Serial.println("°");
+      } 
+      else {
+        // Error handling for out-of-bounds numbers
+        Serial.println("ERROR: Angles must be between 0 and 180.");
+      }
+    }
+  }
+  */
+}
+
+void printStatusHeader() {
+  Serial.println("\n--- Arduino Servo Controller ---");
+  Serial.println("Type two angles separated by a space or comma.");
+  Serial.println("Example: '45 135' or '90,180' and press ENTER.");
+  Serial.println("--------------------------------");
+}
