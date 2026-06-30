@@ -1,0 +1,70 @@
+// --- Motor A Pin Definitions ---
+const int enA = 9;   // Speed control (PWM pin)
+const int in1 = 4;   // Direction pin 1
+const int in2 = 5;   // Direction pin 2
+
+// --- Motor B Pin Definitions ---
+const int enB = 10;  // Speed control (PWM pin)
+const int in3 = 6;   // Direction pin 1
+const int in4 = 7;   // Direction pin 2
+
+// Track the current direction state (1 or 2)
+int currentDirection = 1; 
+int targetSpeed = 150; // Set motor speed (0 to 255)
+
+void setup() {
+  // Set all the motor control pins to outputs
+  pinMode(enA, OUTPUT);
+  pinMode(enB, OUTPUT);
+  pinMode(in1, OUTPUT);
+  pinMode(in2, OUTPUT);
+  pinMode(in3, OUTPUT);
+  pinMode(in4, OUTPUT);
+
+  // Initialize Serial Communication at 9600 baud rate
+  Serial.begin(9600);
+  
+  // Print instructions to the Serial Monitor
+  Serial.println("Motor Control Ready!");
+  Serial.println("Type '1' for Mode 1 (A: CW, B: CCW)");
+  Serial.println("Type '2' for Mode 2 (A: CCW, B: CW)");
+}
+
+void loop() {
+  // Check if data is available in the Serial Monitor
+  if (Serial.available() > 0) {
+    char userInput = Serial.read(); // Read the character entered
+
+    // Filter out newline or carriage return characters
+    if (userInput == '1') {
+      currentDirection = 1;
+      Serial.println("Switched to Mode 1 (A: CW, B: CCW)");
+    } 
+    else if (userInput == '2') {
+      currentDirection = 2;
+      Serial.println("Switched to Mode 2 (A: CCW, B: CW)");
+    }
+  }
+
+  // Apply motor configurations based on the current active direction
+  if (currentDirection == 1) {
+    // Motor A: Clockwise
+    digitalWrite(in1, LOW);
+    digitalWrite(in2, HIGH);
+    // Motor B: Counter-Clockwise
+    digitalWrite(in3, LOW);
+    digitalWrite(in4, HIGH);
+  } 
+  else if (currentDirection == 2) {
+    // Motor A: Counter-Clockwise
+    digitalWrite(in1, HIGH);
+    digitalWrite(in2, LOW);
+    // Motor B: Clockwise
+    digitalWrite(in3, HIGH);
+    digitalWrite(in4, LOW);
+  }
+
+  // Continuously apply speed to enable pins
+  analogWrite(enA, targetSpeed);
+  analogWrite(enB, targetSpeed);
+}
