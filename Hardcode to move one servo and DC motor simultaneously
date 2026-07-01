@@ -1,0 +1,57 @@
+#include <Servo.h>
+
+// --- Servo Configuration ---
+Servo myServo;
+const int servoPin = 3;
+int servoPos = 90;            // Start at center (90 degrees)
+int servoStep = 1;            // Degrees to move per step
+unsigned long lastServoTime = 0;
+const long servoInterval = 20; // Milliseconds between servo moves
+
+// --- DC Motor Configuration ---
+const int ENA = 10;            // PWM pin for speed control
+const int IN1 = 9;            // Direction pin 1
+const int IN2 = 8;            // Direction pin 2
+// Set the PWM speed (0 to 255). 
+// You may need to adjust this value to get exactly 20 RPM on your specific motor
+const int motorSpeed = 150;   
+
+void setup() {
+  myServo.attach(servoPin);
+  myServo.write(servoPos);
+  
+  // Set motor pins as outputs
+  pinMode(ENA, OUTPUT);
+  pinMode(IN1, OUTPUT);
+  pinMode(IN2, OUTPUT);
+  
+  // Start DC motor spinning (Forward direction)
+  digitalWrite(IN1, HIGH);
+  digitalWrite(IN2, LOW);
+  analogWrite(ENA, motorSpeed);
+}
+
+void loop() {
+  unsigned long currentMillis = millis();
+
+  // --- Non-blocking Servo Sweeping ---
+  // This moves the servo by 1 degree every 20 milliseconds
+  if (currentMillis - lastServoTime >= servoInterval) {
+    lastServoTime = currentMillis;
+    
+    servoPos += servoStep;
+    
+    // Reverse direction at the 45-degree limits
+    // Since 90 is center, this moves between 45 and 135 degrees (45 degrees in both directions)
+    if (servoPos >= 135 || servoPos <= 45) {
+      servoStep = -servoStep; 
+    }
+    
+    myServo.write(servoPos);
+  }
+
+  // --- DC Motor Control ---
+  // The motor spins continuously in the background
+  analogWrite(ENA, motorSpeed);
+}
+
